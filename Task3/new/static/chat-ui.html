@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat UI</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background: url("wp4543071-harry-potter-and-the-prisoner-of-azkaban-wallpapers.jpg")
+          no-repeat center center fixed;
+        background-size: cover;
+        color: #fff;
+        margin: 0;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(30, 30, 30, 0.6);
+        z-index: -1;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+        flex-direction: column;
+      }
+      .avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 100%;
+        margin-bottom: 20px;
+      }
+      .username {
+        font-weight: bold;
+        font-size: larger;
+      }
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 60vh;
+        overflow-y: auto;
+        width: 40%;
+        scrollbar-width: none;
+      }
+      .chat-container::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+      .message {
+        max-width: 70%;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .sent {
+        align-self: flex-end;
+        background-color: #dcab5e;
+        padding: 16px;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 4px;
+        margin-bottom: 20px;
+        color: rgb(0, 0, 0);
+      }
+      .received {
+        align-self: flex-start;
+        background-color: #3a3a3a;
+        padding: 16px;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        border-bottom-right-radius: 16px;
+        border-bottom-left-radius: 4px;
+
+        margin-bottom: 20px;
+      }
+      .input-area {
+        position: relative;
+        display: flex;
+        margin-top: 30px;
+        justify-content: center;
+        align-items: center;
+      }
+      #messageInput {
+        
+        flex-grow: 1;
+        padding: 18px;
+        border: none;
+        border-radius: 60px;
+        background-color: #3a3a3a;
+        font-size: medium;
+        color: #fff;
+      }
+      #messageInput:focus {
+        outline: none;
+      }
+      #sendButton {
+        background-color: #dcab5e;
+        color: black;
+        border: none;
+        padding: 18px 20px;
+        border-radius: 40px;
+        font-size: medium;
+        margin-left: 10px;
+        cursor: pointer;
+      }
+      .container {
+        
+        width: 100%;
+        max-width: 600px;
+        padding-inline: 20px;
+      }
+
+      /* Loading dots animation */
+      .loading-dots {
+        display: inline-block;
+        position: relative;
+        width: 50px;
+        height: 16px;
+      }
+      .loading-dots div {
+        position: absolute;
+        top: 0;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #dcab5e;
+        animation-timing-function: cubic-bezier(0, 1, 1, 0);
+      }
+      .loading-dots div:nth-child(1) {
+        left: 8px;
+        animation: loading-dots1 0.6s infinite;
+      }
+      .loading-dots div:nth-child(2) {
+        left: 8px;
+        animation: loading-dots2 0.6s infinite;
+      }
+      .loading-dots div:nth-child(3) {
+        left: 24px;
+        animation: loading-dots2 0.6s infinite;
+      }
+      .loading-dots div:nth-child(4) {
+        left: 40px;
+        animation: loading-dots3 0.6s infinite;
+      }
+      @keyframes loading-dots1 {
+        0% {
+          transform: scale(0);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes loading-dots3 {
+        0% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(0);
+        }
+      }
+      @keyframes loading-dots2 {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(16px, 0);
+        }
+      }
+
+      .send-button {
+        right:0;
+        position: absolute;
+        background-color: transparent; /* Make the button background transparent */
+        border: none; /* Remove the default border */
+        border-radius: 50%; /* Make it circular */
+        width: 50px; /* Set a width for the button */
+        height: 50px; /* Set a height for the button */
+        display: flex; /* Use flexbox to center the image */
+        align-items: center; /* Center vertically */
+        justify-content: center; /* Center horizontally */
+        cursor: pointer; /* Change the cursor to a pointer on hover */
+        margin-right: 22px;
+      }
+
+      .send-button img {
+        width: 30px; /* Set the width of the image */
+        height: 30px; /* Set the height of the image */
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div class="header container">
+      <img
+        src="https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg"
+        class="avatar"
+      />
+      <span class="username">Harry Potter</span>
+    </div>
+    <div class="chat-container container" id="chatContainer"></div>
+    <div class="input-area container">
+      <button id="sendButton" class="send-button">
+        <img src="send.png" alt="Send" />
+      </button>
+      <input
+        type="text"
+        id="messageInput"
+        placeholder="What spell should I cast today?"
+      />
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+      const chatContainer = document.getElementById("chatContainer");
+      const messageInput = document.getElementById("messageInput");
+      const sendButton = document.getElementById("sendButton");
+
+      sendButton.addEventListener("click", sendMessage);
+      messageInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          sendMessage();
+        }
+      });
+
+      async function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message) {
+          addMessage(message, "sent");
+          messageInput.value = "";
+
+          // Add loading dots animation while waiting for the response
+          const loadingDots = createLoadingDots();
+          chatContainer.appendChild(loadingDots);
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+
+          // Send the message to the FastAPI backend
+          try {
+            const response = await fetch(
+              "http://localhost:8000/generate-answer", // Update the URL if your FastAPI server is hosted differently
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ user_query: message }),
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+
+            const data = await response.json();
+            chatContainer.removeChild(loadingDots); // Remove the loading dots
+            addMessage(data.generated_answer, "received"); // Add the response from the API
+          } catch (error) {
+            chatContainer.removeChild(loadingDots); // Remove the loading dots
+            console.error("Error:", error);
+            addMessage("Sorry, I couldn't get a response.", "received");
+          }
+        }
+      }
+
+      function addMessage(text, type) {
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("message", type);
+        messageElement.textContent = text;
+        chatContainer.appendChild(messageElement);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+
+      function createLoadingDots() {
+        const loadingDots = document.createElement("div");
+        loadingDots.classList.add("loading-dots");
+
+        for (let i = 0; i < 4; i++) {
+          const dot = document.createElement("div");
+          loadingDots.appendChild(dot);
+        }
+
+        return loadingDots;
+      }
+    </script>
+  </body>
+</html>
