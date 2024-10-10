@@ -3,7 +3,7 @@
 
 for Task 3 
 go to the "new" folder
-then there is one notebook named Untitled2.ipynb
+then there is one notebook named "Untitled2.ipynb"
 run the extreme last cell in the notebook
 
 and then go to the folder "static" 
