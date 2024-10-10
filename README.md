@@ -1,6 +1,10 @@
 # Intelligence-24-25-Recs
 
 
+Name - Manish Agarwal
+Roll No - 231CS232
+
+
 for Task 3 
 go to the "new" folder
 then there is one notebook named "Untitled2.ipynb"
