@@ -6,8 +6,8 @@ go to the "new" folder
 then there is one notebook named Untitled2.ipynb
 run the extreme last cell in the notebook
 
-and then go to the folder static 
-in there host the chat-ui.html file for the ui and there you can ask questions
+and then go to the folder "static" 
+in there host the "chat-ui.html" file for the ui and there you can ask questions
 
 
 
