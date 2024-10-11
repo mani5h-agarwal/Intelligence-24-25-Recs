@@ -21,6 +21,7 @@ so i have attached the drive link for that notebooks, extremely sorry for the in
 also for Task2 subtasks 1, 3, 4, i have printed all the predicted images there only
 
 
+<img width="1280" alt="Screenshot 2024-10-11 at 11 46 19 AM" src="https://github.com/user-attachments/assets/a6191b5d-845b-4177-bb70-c8d8c47bf3aa">
 
 
 
